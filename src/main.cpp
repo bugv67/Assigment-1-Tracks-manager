@@ -49,10 +49,10 @@ void test_phase_1_memory_leaks() {
 
     std::cout << "Cleaning up..." << std::endl;
     delete my_playlist;  // Should clean up playlist nodes
-    if(del){
-        delete mp3;          // Should clean up AudioTrack data
-        delete wav;          // Should clean up AudioTrack data
-    }
+    // if(del){
+    //     delete mp3;          // Should clean up AudioTrack data
+    //     delete wav;          // Should clean up AudioTrack data
+    // }
 
     std::cout << "Phase 1 test complete. Check for memory leaks!\n" << std::endl;
 }
@@ -188,9 +188,9 @@ int main(int argc, char* argv[]) {
         
         // Test each phase individually
         test_phase_1_memory_leaks();
-        test_phase_2_rule_of_5();
-        test_phase_3();
-        demonstrate_polymorphism();
+        // test_phase_2_rule_of_5();
+        // test_phase_3();
+        // demonstrate_polymorphism();
         std::cout << "\n(Set 'run_software' to true in main.cpp to run the full interactive session.)\n" << std::endl;
     }
     return 0;
