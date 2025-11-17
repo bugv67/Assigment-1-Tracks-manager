@@ -21,7 +21,7 @@ struct PlaylistNode {
 
     PlaylistNode(AudioTrack* t) : track(t), next(nullptr) {}
     ~PlaylistNode() {
-        // delete track;
+        delete track;
     };
 };
 
