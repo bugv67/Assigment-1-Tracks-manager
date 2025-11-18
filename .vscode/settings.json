@@ -35,6 +35,7 @@
         "*.h": "cpp",
         "*.cpp": "cpp",
         "*.txt": "plaintext",
+<<<<<<< HEAD
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
@@ -92,6 +93,9 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "format": "cpp"
+=======
+        "new": "cpp"
+>>>>>>> 8aa59a64a53b9d4b451cac6e19a6ab277324cbe2
     },
     // Editor settings for academic integrity
     "editor.acceptSuggestionOnCommitCharacter": false,
