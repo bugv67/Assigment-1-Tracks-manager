@@ -7,7 +7,7 @@ Playlist::Playlist(const std::string &name)
 {
     std::cout << "Created playlist: " << name << std::endl;
 }
-void DeleteNode(PlaylistNode *node)
+void Playlist::DeleteNode(PlaylistNode *node)
 {
     // deep deleting the node
     delete node->track;
