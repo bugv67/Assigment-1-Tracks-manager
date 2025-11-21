@@ -51,6 +51,7 @@ AudioTrack::AudioTrack(const AudioTrack &other) : title(other.title), artists(ot
     // deep copy: double* waveform_data
     // string ?
     // vector ?
+    artists = std::vector<std::string>(other.artists);
     waveform_data = new double[other.waveform_size];
 
     for (int i = 0; i < other.waveform_size; ++i)
@@ -67,33 +68,35 @@ AudioTrack::AudioTrack(const AudioTrack &other) : title(other.title), artists(ot
 AudioTrack &AudioTrack::operator=(const AudioTrack &other)
 {
     // TODO: Implement the copy assignment operator
-    if (&other != this)
-    {
-        title = other.title;
-        duration_seconds = other.duration_seconds;
-        bpm = other.bpm;
-        waveform_size = other.waveform_size;
-
-        // deep copy + delete==deallocate
-        delete[] waveform_data;
-        waveform_data = new double[waveform_size];
-        artists = other.artists;
-
-        for (int i = 0; i < other.waveform_size; ++i)
-        {
-            waveform_data[i] = other.waveform_data[i];
-        }
-    }
 
 #ifdef DEBUG
     std::cout << "AudioTrack copy assignment called for: " << other.title << std::endl;
 #endif
     // Your code here...
+    if (this == &other)
+    {
+        return *this;
+    }
+    delete[] waveform_data;
+
+    title = other.title;
+    duration_seconds = other.duration_seconds;
+    bpm = other.bpm;
+    waveform_size = other.waveform_size;
+
+    artists.clear();
+    // TODO: Should this be a deep copy of the strings?
+    artists.insert(artists.end(), other.artists.begin(), other.artists.end());
+    waveform_data = new double[waveform_size];
+    for (int i = 0; i < waveform_size; i++)
+    {
+        waveform_data[i] = other.waveform_data[i];
+    }
     return *this;
 }
 
-AudioTrack::AudioTrack(AudioTrack &&other) noexcept : title(std::move(other.title)), artists(std::move(other.artists)), duration_seconds(other.duration_seconds), bpm(other.bpm),
-                                                      waveform_size(other.waveform_size), waveform_data(other.waveform_data)
+AudioTrack::AudioTrack(AudioTrack &&other) noexcept : title(other.title), duration_seconds(other.duration_seconds), bpm(other.bpm),
+                                                      waveform_size(other.waveform_size)
 {
 
 // TODO: Implement the move constructor
@@ -103,7 +106,19 @@ AudioTrack::AudioTrack(AudioTrack &&other) noexcept : title(std::move(other.titl
     // Your code here...
     // set pointers to null - vector is not a pointer so no nullptr
     //                     - string?
-    other.waveform_data = nullptr;
+
+    artists.clear();
+    artists.insert(artists.end(), other.artists.begin(), other.artists.end());
+    waveform_data = other.waveform_data; // init list?
+
+    // What does it mean to zero out?
+    other.waveform_data = new double[0];
+    // other.waveform_data = nullptr;
+    other.title = "";
+    other.duration_seconds = 0;
+    other.bpm = 0;
+    other.waveform_size = 0;
+    other.artists.clear();
 }
 
 AudioTrack &AudioTrack::operator=(AudioTrack &&other) noexcept
@@ -114,21 +129,21 @@ AudioTrack &AudioTrack::operator=(AudioTrack &&other) noexcept
     std::cout << "AudioTrack move assignment called for: " << other.title << std::endl;
 #endif
     // Your code here...
-    if (this != &other)
+    if (this == &other)
     {
-        duration_seconds = other.duration_seconds;
-        bpm = other.bpm;
-        waveform_size = other.waveform_size;
-
-        // object  steal
-        delete[] waveform_data;
-        waveform_data = other.waveform_data;
-        other.waveform_data = nullptr;
-        other.waveform_size = 0;
-
-        artists = std::move(other.artists);
-        title = std::move(other.title);
+        return *this;
     }
+    delete[] waveform_data;
+
+    title = other.title;
+    duration_seconds = other.duration_seconds;
+    bpm = other.bpm;
+    waveform_size = other.waveform_size;
+
+    artists.clear();
+    artists.insert(artists.end(), other.artists.begin(), other.artists.end());
+    waveform_data = other.waveform_data;
+
     return *this;
 }
 
