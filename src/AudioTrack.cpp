@@ -44,15 +44,14 @@ AudioTrack::~AudioTrack()
     delete[] waveform_data;
 }
 
-AudioTrack::AudioTrack(const AudioTrack &other) : title(other.title), artists(other.artists),
-                                                  duration_seconds(other.duration_seconds), bpm(other.bpm), waveform_size(other.waveform_size)
+AudioTrack::AudioTrack(const AudioTrack &other) : title(other.title),
+                                                  artists(other.artists),
+                                                  waveform_data(new double[other.waveform_size]),
+                                                  duration_seconds(other.duration_seconds),
+                                                  bpm(other.bpm),
+                                                  waveform_size(other.waveform_size)
 {
     // TODO: Implement the copy constructor
-    // deep copy: double* waveform_data
-    // string ?
-    // vector ?
-    artists = std::vector<std::string>(other.artists);
-    waveform_data = new double[other.waveform_size];
 
     for (int i = 0; i < other.waveform_size; ++i)
     {
@@ -78,15 +77,14 @@ AudioTrack &AudioTrack::operator=(const AudioTrack &other)
         return *this;
     }
     delete[] waveform_data;
+    artists.clear();
 
     title = other.title;
     duration_seconds = other.duration_seconds;
     bpm = other.bpm;
     waveform_size = other.waveform_size;
 
-    artists.clear();
-    // TODO: Should this be a deep copy of the strings?
-    artists.insert(artists.end(), other.artists.begin(), other.artists.end());
+    artists = other.artists;
     waveform_data = new double[waveform_size];
     for (int i = 0; i < waveform_size; i++)
     {
@@ -95,32 +93,34 @@ AudioTrack &AudioTrack::operator=(const AudioTrack &other)
     return *this;
 }
 
-AudioTrack::AudioTrack(AudioTrack &&other) noexcept : title(other.title), duration_seconds(other.duration_seconds), bpm(other.bpm),
+// steal but valid
+AudioTrack::AudioTrack(AudioTrack &&other) noexcept : title(std::move(other.title)),
+                                                      artists(std::move(other.artists)),
+                                                      duration_seconds(other.duration_seconds),
+                                                      bpm(other.bpm),
                                                       waveform_size(other.waveform_size)
 {
 
 // TODO: Implement the move constructor
 #ifdef DEBUG
     std::cout << "AudioTrack move constructor called for: " << other.title << std::endl;
+    std::cerr << "other data c_str pointer:\t" << (void *)other.title.c_str() << std::endl;
+    std::cerr << "data c_str pointer:\t" << (void *)title.c_str() << std::endl;
 #endif
-    // Your code here...
-    // set pointers to null - vector is not a pointer so no nullptr
-    //                     - string?
 
-    artists.clear();
-    artists.insert(artists.end(), other.artists.begin(), other.artists.end());
-    waveform_data = other.waveform_data; // init list?
+    // delete[] waveform_data;  // empty because its a constractor so cannot delete an nullptr!!
+    //  artists.clear(); // empty
 
-    // What does it mean to zero out?
-    other.waveform_data = new double[0];
-    // other.waveform_data = nullptr;
+    waveform_data = other.waveform_data;
+
+    other.waveform_data = nullptr;
     other.title = "";
     other.duration_seconds = 0;
     other.bpm = 0;
     other.waveform_size = 0;
-    other.artists.clear();
 }
 
+// steal
 AudioTrack &AudioTrack::operator=(AudioTrack &&other) noexcept
 {
     // TODO: Implement the move assignment operator
@@ -134,15 +134,17 @@ AudioTrack &AudioTrack::operator=(AudioTrack &&other) noexcept
         return *this;
     }
     delete[] waveform_data;
+    artists.clear();
 
-    title = other.title;
+    title = std::move(other.title);
     duration_seconds = other.duration_seconds;
     bpm = other.bpm;
     waveform_size = other.waveform_size;
 
-    artists.clear();
-    artists.insert(artists.end(), other.artists.begin(), other.artists.end());
+    artists = std::move(other.artists);
     waveform_data = other.waveform_data;
+
+    other.waveform_data = nullptr;
 
     return *this;
 }
