@@ -1,3 +1,0 @@
-# ignore build artifacts
-*.o
-/bin/dj_manager
