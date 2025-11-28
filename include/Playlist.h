@@ -46,6 +46,7 @@ public:
      * Destructor
      */
     ~Playlist();
+    Playlist& operator=(const Playlist& other);
 
     /**
      * Add a track to the playlist
