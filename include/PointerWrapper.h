@@ -81,7 +81,7 @@ public:
         {
             return *this;
         }
-
+        delete ptr;  
         ptr = other.ptr;
         other.ptr = nullptr;
         return *this;
