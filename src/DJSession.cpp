@@ -174,17 +174,62 @@ void DJSession::simulate_dj_performance()
     // std::cout << "TODO: Implement the DJ performance simulation workflow here." << std::endl;
     //  Your implementation here
 
+    std::map<std::string, std::vector<int>> playlists = session_config.playlists;
     if (play_all)
     {
         // Extract and sort all playlist names from session_config.playlists and
         //  iterate through each playlist name
-        std::vector<std::string> playlist_names;
-        for (std::map<std::string, std::vector<int>>::const_iterator it = session_config.playlists.begin();
-             it != session_config.playlists.end(); ++it)
+        for (const auto &playlists_pair : playlists)
         {
-            playlist_names.push_back(it->first);
+            bool can_load = load_playlist(playlists_pair.first);
+            if (!can_load)
+            {
+                std::cout << "[ERROR] Failed to load playlist " << playlists_pair.first << std::endl;
+                stats.errors = stats.errors + 1;
+            }
+            else
+            {
+                for (std::string &title : track_titles)
+                {
+                    std::cout << "\n–- Processing: " << title << "–-" << std::endl;
+                    stats.tracks_processed = stats.tracks_processed + 1;
+                    int val_controller = load_track_to_controller(title);
+                    int val_deck = load_track_to_mixer_deck(title);
+                }
+                print_session_summary(); // after allll tracks or playlist tracks?
+                stats = SessionStats();  // same here
+            }
         }
     }
+    else
+    {
+
+        std::string input = display_playlist_menu_from_config();
+
+        while (input != "" || input != "0")
+        {
+            bool can_load = load_playlist(input);
+            if (!can_load)
+            {
+                std::cout << "[ERROR] Failed to load playlist " << input << std::endl;
+                stats.errors = stats.errors + 1;
+            }
+            else
+            {
+                for (std::string title : track_titles)
+                {
+                    std::cout << "\n–- Processing: " << title << "–-" << std::endl;
+                    stats.tracks_processed = stats.tracks_processed + 1;
+                    int val_controller = load_track_to_controller(title);
+                    int val_deck = load_track_to_mixer_deck(title);
+                }
+            }
+            print_session_summary(); // after allll tracks or playlist tracks?
+            stats = SessionStats();  // same here
+            input = display_playlist_menu_from_config();
+        }
+    }
+    std::cout << "Session cancelled by user or all playlits played" << std::endl;
 }
 
 /*
