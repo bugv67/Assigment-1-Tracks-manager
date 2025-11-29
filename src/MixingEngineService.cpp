@@ -64,7 +64,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     // simulating loading and bet anal
     clone->load();
     clone->analyze_beatgrid();
-    if (decks[active_deck] != nullptr && auto_sync && can_mix_tracks(clone))
+    if (decks[active_deck] != nullptr && auto_sync && !can_mix_tracks(clone))
     {
         sync_bpm(clone);
     }
