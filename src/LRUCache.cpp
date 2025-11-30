@@ -18,7 +18,7 @@ AudioTrack* LRUCache::get(const std::string& track_id) {
  * TODO: Implement the put() method for LRUCache
  */
 bool LRUCache::put(PointerWrapper<AudioTrack> track) {
-    if (track.get() == nullptr) return;
+    if (track.get() == nullptr) return false;
     if (get(track.get()->get_title())!= nullptr) {
         return false;
     }
