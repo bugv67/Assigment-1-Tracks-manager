@@ -80,8 +80,7 @@ public:
         if (this == &other)
         {
             return *this;
-        }
-
+        } 
         ptr = other.ptr;
         other.ptr = nullptr;
         return *this;
