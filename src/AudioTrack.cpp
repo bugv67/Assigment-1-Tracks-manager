@@ -6,7 +6,8 @@
 AudioTrack::AudioTrack(const std::string &title, const std::vector<std::string> &artists,
                        int duration, int bpm, size_t waveform_samples)
     : title(title), artists(artists), duration_seconds(duration), bpm(bpm),
-      waveform_data(nullptr), waveform_size(waveform_samples) {
+      waveform_data(nullptr), waveform_size(waveform_samples)
+{
 
     // Allocate memory for waveform analysis
     waveform_data = new double[waveform_size];
@@ -45,14 +46,14 @@ AudioTrack::~AudioTrack()
 
 AudioTrack::AudioTrack(const AudioTrack &other) : title(other.title),
                                                   artists(other.artists),
-                                                  waveform_data(new double[other.waveform_size]),
                                                   duration_seconds(other.duration_seconds),
                                                   bpm(other.bpm),
+                                                  waveform_data(new double[other.waveform_size]), // waveform_data first
                                                   waveform_size(other.waveform_size)
 {
     // TODO: Implement the copy constructor
 
-    for (int i = 0; i < other.waveform_size; ++i)
+    for (size_t i = 0; i < other.waveform_size; ++i)
     {
         waveform_data[i] = other.waveform_data[i];
     }
@@ -85,7 +86,7 @@ AudioTrack &AudioTrack::operator=(const AudioTrack &other)
 
     artists = other.artists;
     waveform_data = new double[waveform_size];
-    for (int i = 0; i < waveform_size; i++)
+    for (size_t i = 0; i < waveform_size; i++)
     {
         waveform_data[i] = other.waveform_data[i];
     }
@@ -97,7 +98,9 @@ AudioTrack::AudioTrack(AudioTrack &&other) noexcept : title(std::move(other.titl
                                                       artists(std::move(other.artists)),
                                                       duration_seconds(other.duration_seconds),
                                                       bpm(other.bpm),
+                                                      waveform_data(other.waveform_data),
                                                       waveform_size(other.waveform_size)
+
 {
 
 // TODO: Implement the move constructor
@@ -109,8 +112,6 @@ AudioTrack::AudioTrack(AudioTrack &&other) noexcept : title(std::move(other.titl
 
     // delete[] waveform_data;  // empty because its a constractor so cannot delete an nullptr!!
     //  artists.clear(); // empty
-
-    waveform_data = other.waveform_data;
 
     other.waveform_data = nullptr;
     other.title = "";

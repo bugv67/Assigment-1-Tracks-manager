@@ -64,7 +64,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     // simulating loading and bet anal
     clone->load();
     clone->analyze_beatgrid();
-    if (decks[active_deck] != nullptr && auto_sync && can_mix_tracks(clone))
+    if (decks[active_deck] != nullptr && auto_sync && !can_mix_tracks(clone))
     {
         sync_bpm(clone);
     }
@@ -110,12 +110,12 @@ bool MixingEngineService::can_mix_tracks(const PointerWrapper<AudioTrack> &track
 {
     // Your implementation here
 
-    if (decks[active_deck] != nullptr && !track)
+    if (decks[active_deck] != nullptr && track)
     {
         int active_bpm = decks[active_deck]->get_bpm();
         int clone_bpm = track->get_bpm();
-        int absolote_bpm = std::abs(clone_bpm - active_bpm); /////////////
-        if (absolote_bpm <= bpm_tolerance)
+        int absolute_bpm = std::abs(clone_bpm - active_bpm);
+        if (absolute_bpm <= bpm_tolerance)
         {
             return true;
         }
