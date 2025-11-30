@@ -36,6 +36,64 @@ MixingEngineService::~MixingEngineService()
     std::cout << "[MixingEngineService] Cleaning up decks..." << std::endl;
 }
 
+// copy constractor
+MixingEngineService::MixingEngineService(const MixingEngineService &other)
+    : active_deck(other.active_deck),
+      auto_sync(other.auto_sync),
+      bpm_tolerance(other.bpm_tolerance)
+{
+    // Deep copy both deckes
+    for (int i = 0; i < 2; ++i)
+    {
+        if (other.decks[i])
+        {
+            PointerWrapper<AudioTrack> clone = other.decks[i]->clone();
+            decks[i] = clone.release();
+        }
+        else
+        {
+            decks[i] = nullptr;
+        }
+    }
+
+    // std::cout << "[MixingEngineService] Copy constructor used.\n";
+}
+
+//  operator =
+MixingEngineService &MixingEngineService::operator=(const MixingEngineService &other)
+{
+    if (this == &other)
+        return *this;
+
+    for (int i = 0; i < 2; ++i)
+    {
+        if (decks[i])
+        {
+            delete decks[i];
+            decks[i] = nullptr;
+        }
+    }
+    active_deck = other.active_deck;
+    auto_sync = other.auto_sync;
+    bpm_tolerance = other.bpm_tolerance;
+    // copy thw deck
+    for (int i = 0; i < 2; ++i)
+    {
+        if (other.decks[i])
+        {
+            PointerWrapper<AudioTrack> clone = other.decks[i]->clone();
+            decks[i] = clone.release();
+        }
+        else
+        {
+            decks[i] = nullptr;
+        }
+    }
+
+    // std::cout << "[MixingEngineService] Copy assignment operator used.\n";
+    return *this;
+}
+
 /**
  * TODO: Implement loadTrackToDeck method
  * @param track: Reference to the track to be loaded
@@ -56,7 +114,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     int target = 1 - active_deck;
     std::cout << " [Deck Switch] Target deck: " << target << std::endl;
     // unload
-    if (!decks[target])
+    if (decks[active_deck] != nullptr)
     {
         delete decks[target];
         decks[target] = nullptr;

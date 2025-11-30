@@ -179,6 +179,7 @@ void DJSession::simulate_dj_performance()
     {
         // Extract and sort all playlist names from session_config.playlists and
         //  iterate through each playlist name
+        // std::sort(playlists.begin(), playlists.end());
         for (const auto &playlists_pair : playlists)
         {
             bool can_load = load_playlist(playlists_pair.first);

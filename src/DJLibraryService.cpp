@@ -100,7 +100,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
     playlist = Playlist(playlist_name);
     for (int oneIdx : track_indices)
     {
-        int idx = oneIdx - 1;
+        size_t idx = oneIdx - 1;
         if (idx >= library.size())
         {
             std::cout << "[WARNING] Invalid track index: " << idx << std::endl;

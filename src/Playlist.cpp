@@ -27,32 +27,63 @@ Playlist::~Playlist()
         head = next;
     }
 }
-Playlist& Playlist::operator=(const Playlist& other) {
-    if (this == &other) {
+// copy constractor
+Playlist::Playlist(const Playlist &other)
+    : head(nullptr), playlist_name(other.playlist_name), track_count(0)
+{
+    PlaylistNode *last = nullptr;
+    PlaylistNode *current = other.head;
+
+    while (current)
+    {
+        PointerWrapper<AudioTrack> newTrack = current->track->clone();
+        PlaylistNode *newNode = new PlaylistNode(newTrack.release());
+
+        if (!head)
+            head = newNode;
+        else
+            last->next = newNode;
+
+        last = newNode;
+        current = current->next;
+        track_count++;
+    }
+}
+
+// opwerator=
+Playlist &Playlist::operator=(const Playlist &other)
+{
+    if (this == &other)
+    {
         return *this;
     }
-   
-    while (head) {
-        PlaylistNode* next = head->next;
+
+    while (head)
+    {
+        PlaylistNode *next = head->next;
         DeleteNode(head);
         head = next;
     }
 
-    PlaylistNode* last = nullptr;
-    PlaylistNode* current = other.head;
+    PlaylistNode *last = nullptr;
+    PlaylistNode *current = other.head;
 
-    while (current) {
+    while (current)
+    {
         PointerWrapper<AudioTrack> clone = current->track->clone();
-        AudioTrack* newTrack = clone.release();
+        AudioTrack *newTrack = clone.release();
 
-        PlaylistNode* newNode = new PlaylistNode(newTrack);
+        PlaylistNode *newNode = new PlaylistNode(newTrack);
 
-        if (!head) {
-            head = newNode; 
-        } else {
-            last->next = newNode; 
+        if (!head)
+        {
+            head = newNode;
         }
-        last = newNode;           
+        else
+        {
+            last->next = newNode;
+        }
+        last = newNode;
         current = current->next;
     }
     playlist_name = other.playlist_name;
