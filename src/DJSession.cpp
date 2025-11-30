@@ -224,8 +224,8 @@ void DJSession::simulate_dj_performance()
                     stats.tracks_processed = stats.tracks_processed + 1;
                     load_track_to_controller(title);
                     load_track_to_mixer_deck(title);
-                    // mixing_service.displayDeckStatus(); // to print deck and cache after every track
-                    // controller_service.displayCacheStatus();
+                    mixing_service.displayDeckStatus(); // to print deck and cache after every track
+                    controller_service.displayCacheStatus();
                 }
             }
             print_session_summary(); // after allll tracks or playlist tracks?

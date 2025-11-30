@@ -94,11 +94,12 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
                                                const std::vector<int> &track_indices)
 {
     // Your implementation here
-     std::cout << "[INFO] Loading playlist: " << playlist_name << std::endl;
-     // maybe it should be on the stack??
-     //new playlist or playlist we have
-     playlist = Playlist(playlist_name);
-    for(int oneIdx : track_indices) {
+    std::cout << "[INFO] Loading playlist: " << playlist_name << std::endl;
+    // maybe it should be on the stack??
+    // new playlist or playlist we have
+    playlist = Playlist(playlist_name);
+    for (int oneIdx : track_indices)
+    {
         int idx = oneIdx - 1;
         if (idx >= library.size())
         {
@@ -114,10 +115,10 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
         }
         clone->load();
         clone->analyze_beatgrid();
-        playlist.add_track(clone.get());
+        playlist.add_track(clone.release());
+        std::cout << "add to playlist \n";
     }
-    std::cout << "[INFO] Playlist loaded: " << playlist_name
-              << " (" << playlist.getTracks().size() << " tracks)\n";
+    std::cout << "[INFO] Playlist loaded: " << playlist_name << " (" << playlist.getTracks().size() << " tracks)\n";
 }
 /**
  * TODO: Implement getTrackTitles method
