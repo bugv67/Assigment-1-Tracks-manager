@@ -53,7 +53,7 @@ AudioTrack::AudioTrack(const AudioTrack &other) : title(other.title),
 {
     // TODO: Implement the copy constructor
 
-    for (int i = 0; i < other.waveform_size; ++i)
+    for (size_t i = 0; i < other.waveform_size; ++i)
     {
         waveform_data[i] = other.waveform_data[i];
     }
@@ -86,7 +86,7 @@ AudioTrack &AudioTrack::operator=(const AudioTrack &other)
 
     artists = other.artists;
     waveform_data = new double[waveform_size];
-    for (int i = 0; i < waveform_size; i++)
+    for (size_t i = 0; i < waveform_size; i++)
     {
         waveform_data[i] = other.waveform_data[i];
     }
@@ -98,7 +98,9 @@ AudioTrack::AudioTrack(AudioTrack &&other) noexcept : title(std::move(other.titl
                                                       artists(std::move(other.artists)),
                                                       duration_seconds(other.duration_seconds),
                                                       bpm(other.bpm),
+                                                      waveform_data(other.waveform_data),
                                                       waveform_size(other.waveform_size)
+
 {
 
 // TODO: Implement the move constructor
@@ -110,8 +112,6 @@ AudioTrack::AudioTrack(AudioTrack &&other) noexcept : title(std::move(other.titl
 
     // delete[] waveform_data;  // empty because its a constractor so cannot delete an nullptr!!
     //  artists.clear(); // empty
-
-    waveform_data = other.waveform_data;
 
     other.waveform_data = nullptr;
     other.title = "";

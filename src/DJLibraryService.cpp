@@ -101,8 +101,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
     for (int oneIdx : track_indices)
     {
         int idx = oneIdx - 1;
-        if (idx < 0 || (idx >= library.size())) // size== long
-        // if (idx < 0 || idx >= std::ssize(library))
+        if (idx >= library.size())
         {
             std::cout << "[WARNING] Invalid track index: " << idx << std::endl;
             continue;
@@ -111,7 +110,6 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string &playlist_name,
         PointerWrapper<AudioTrack> clone = library[idx]->clone();
         if (clone.get() == nullptr)
         {
-            // how to log??
             std::cout << "[ERROR] failed to clone" << std::endl;
             continue;
         }
