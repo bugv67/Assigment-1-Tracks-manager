@@ -103,7 +103,6 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
 {
     // Your implementation here
     std::cout << " \n=== Loading Track to Deck === " << std::endl;
-    //  PointerWrapper<MP3Track>
 
     PointerWrapper<AudioTrack> clone = track.clone();
     if (clone.get() == nullptr)
@@ -148,7 +147,6 @@ void MixingEngineService::displayDeckStatus() const
     std::cout << "\n=== Deck Status ===\n";
     for (size_t i = 0; i < 2; ++i)
     {
-        std::cout << "in for  \n";
         if (decks[i])
             std::cout << "Deck " << i << ": " << decks[i]->get_title() << "\n";
         else
