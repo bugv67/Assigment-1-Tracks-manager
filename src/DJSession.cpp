@@ -200,7 +200,7 @@ void DJSession::simulate_dj_performance()
                     controller_service.displayCacheStatus();
                 }
                 print_session_summary(); // after allll tracks or playlist tracks?
-                stats = SessionStats();  // same here
+                // stats = SessionStats();  // same here
             }
         }
     }
@@ -230,7 +230,7 @@ void DJSession::simulate_dj_performance()
                 }
             }
             print_session_summary(); // after allll tracks or playlist tracks?
-            stats = SessionStats();  // same here
+            // stats = SessionStats();  // same here
             input = display_playlist_menu_from_config();
         }
     }
