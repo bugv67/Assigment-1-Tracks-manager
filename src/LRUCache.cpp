@@ -84,7 +84,7 @@ size_t LRUCache::findLRUSlot() const {
             minSlot = i;
         } 
     }
-    return max_size;
+    return minSlot;
 }
 
 size_t LRUCache::findEmptySlot() const {
