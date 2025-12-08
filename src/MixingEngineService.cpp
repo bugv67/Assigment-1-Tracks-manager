@@ -122,7 +122,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     // simulating loading and bet anal
     clone->load();
     clone->analyze_beatgrid();
-    if (decks[active_deck] != nullptr && auto_sync && !can_mix_tracks(clone))
+    if (decks[active_deck] != nullptr && auto_sync && can_mix_tracks(clone))
     {
         sync_bpm(clone);
     }
@@ -192,6 +192,6 @@ void MixingEngineService::sync_bpm(const PointerWrapper<AudioTrack> &track) cons
     {
         int bpm = decks[active_deck]->get_bpm();
         int avg_bpm = (track->get_bpm() + decks[active_deck]->get_bpm()) / 2;
-        std::cout << "[Sync BPM]: Syncing BPM from  " << bpm << " to" << avg_bpm << "\n";
+        std::cout << "[Sync BPM]: Syncing BPM from  " << bpm << " to " << avg_bpm << "\n";
     }
 }
