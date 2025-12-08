@@ -90,7 +90,6 @@ MixingEngineService &MixingEngineService::operator=(const MixingEngineService &o
         }
     }
 
-    // std::cout << "[MixingEngineService] Copy assignment operator used.\n";
     return *this;
 }
 
@@ -135,7 +134,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     //    decks[active_deck] = nullptr;
     // }
     active_deck = target;
-    std::cout << " [Active deck] Switched to deck" << target << std::endl;
+    std::cout << " [Active Deck] Switched to deck" << target << std::endl;
 
     return target;
 }
