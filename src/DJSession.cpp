@@ -179,6 +179,7 @@ void DJSession::simulate_dj_performance()
     {
         // Extract and sort all playlist names from session_config.playlists and
         //  iterate through each playlist name
+        // std::sort(playlists.begin(), playlists.end());
         for (const auto &playlists_pair : playlists)
         {
             bool can_load = load_playlist(playlists_pair.first);
@@ -199,7 +200,7 @@ void DJSession::simulate_dj_performance()
                     controller_service.displayCacheStatus();
                 }
                 print_session_summary(); // after allll tracks or playlist tracks?
-                stats = SessionStats();  // same here
+                // stats = SessionStats();  // same here
             }
         }
     }
@@ -229,7 +230,7 @@ void DJSession::simulate_dj_performance()
                 }
             }
             print_session_summary(); // after allll tracks or playlist tracks?
-            stats = SessionStats();  // same here
+            // stats = SessionStats();  // same here
             input = display_playlist_menu_from_config();
         }
     }
