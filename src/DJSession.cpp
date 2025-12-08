@@ -201,9 +201,9 @@ void DJSession::simulate_dj_performance()
                     std::cout << "\n–-- Processing: " << title << "–--" << std::endl;
                     stats.tracks_processed = stats.tracks_processed + 1;
                     load_track_to_controller(title);
+                    controller_service.displayCacheStatus();
                     load_track_to_mixer_deck(title);
                     mixing_service.displayDeckStatus(); // to print deck and cache after every track
-                    controller_service.displayCacheStatus();
                 }
                 print_session_summary(); // after allll tracks or playlist tracks?
                 // stats = SessionStats();  // same here
@@ -230,8 +230,9 @@ void DJSession::simulate_dj_performance()
                     std::cout << "\n–-- Processing: " << title << "–--" << std::endl;
                     stats.tracks_processed = stats.tracks_processed + 1;
                     load_track_to_controller(title);
-                    load_track_to_mixer_deck(title);
                     mixing_service.displayDeckStatus(); // to print deck and cache after every track
+                    load_track_to_mixer_deck(title);
+
                     controller_service.displayCacheStatus();
                 }
             }

@@ -6,7 +6,7 @@
  * TODO: Implement MixingEngineService constructor
  */
 MixingEngineService::MixingEngineService()
-    : decks(), active_deck(0), auto_sync(false), bpm_tolerance(0)
+    : decks(), active_deck(1), auto_sync(false), bpm_tolerance(0)
 {
     decks[0] = nullptr;
     decks[1] = nullptr;
@@ -102,7 +102,6 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
 {
     // Your implementation here
     std::cout << " \n=== Loading Track to Deck === " << std::endl;
-
     PointerWrapper<AudioTrack> clone = track.clone();
     if (clone.get() == nullptr)
     {
@@ -112,27 +111,27 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     int target = 1 - active_deck;
     std::cout << " [Deck Switch] Target deck: " << target << std::endl;
     // unload
-    if (decks[active_deck] != nullptr)
+    if (decks[target] != nullptr)
     {
-        std::cout << " [Unload] Unloading previous deck" << active_deck << " (" << decks[active_deck]->get_title() << ")" << std::endl; //???
+        // std::cout << " [Unload] Unloading previous deck" << active_deck << " (" << decks[active_deck]->get_title() << ")" << std::endl; //???
         delete decks[target];
         decks[target] = nullptr;
     }
-    // simulating loading and bet anal
+    // simulating loading
     clone->load();
     clone->analyze_beatgrid();
+
     if (decks[active_deck] != nullptr && auto_sync && !can_mix_tracks(clone))
     {
         sync_bpm(clone);
     }
+    if (decks[active_deck] == nullptr)
+    {
+        std::cout << " [Sync BPM] Cannot sync - one of the decks is empty." << std::endl;
+    }
     decks[target] = clone.release();
-    std::cout << " [Load Complete ] " << track.get_title() << std::endl;
-    // if (decks[active_deck] != nullptr)
-    // {
-    //     std::cout << " [Unload] Unloading previous deck" << active_deck << " (" << decks[active_deck]->get_title() << ")" << std::endl;
-    //     delete decks[active_deck];
-    //    decks[active_deck] = nullptr;
-    // }
+    std::cout << " [Load Complete] " << track.get_title() << " is now loaded on deck " << target << std::endl;
+
     active_deck = target;
     std::cout << " [Active Deck] Switched to deck" << target << std::endl;
 
