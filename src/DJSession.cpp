@@ -174,7 +174,13 @@ void DJSession::simulate_dj_performance()
     // std::cout << "TODO: Implement the DJ performance simulation workflow here." << std::endl;
     //  Your implementation here
 
+    ////////// reverse palylists
     std::map<std::string, std::vector<int>> playlists = session_config.playlists;
+    //  for (auto &pair : playlists)
+    // {
+    //      std::reverse(pair.second.begin(), pair.second.end());
+    // }
+
     if (play_all)
     {
         // Extract and sort all playlist names from session_config.playlists and
