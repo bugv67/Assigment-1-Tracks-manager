@@ -101,7 +101,7 @@ MixingEngineService &MixingEngineService::operator=(const MixingEngineService &o
 int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
 {
     // Your implementation here
-    std::cout << " \n=== Loading Track to Deck === " << std::endl;
+    std::cout << " \n=== Loading Track to Deck ===" << std::endl;
     PointerWrapper<AudioTrack> clone = track.clone();
     if (clone.get() == nullptr)
     {
@@ -109,7 +109,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
         return -1;
     }
     int target = 1 - active_deck;
-    std::cout << " [Deck Switch] Target deck: " << target << std::endl;
+    std::cout << "[Deck Switch] Target deck: " << target << std::endl;
     // unload
     if (decks[target] != nullptr)
     {
@@ -127,13 +127,13 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack &track)
     }
     if (decks[active_deck] == nullptr)
     {
-        std::cout << " [Sync BPM] Cannot sync - one of the decks is empty." << std::endl;
+        std::cout << "[Sync BPM] Cannot sync - one of the decks is empty." << std::endl;
     }
     decks[target] = clone.release();
-    std::cout << " [Load Complete] " << track.get_title() << " is now loaded on deck " << target << std::endl;
+    std::cout << "[Load Complete] '" << track.get_title() << "' is now loaded on deck " << target << std::endl;
 
     active_deck = target;
-    std::cout << " [Active Deck] Switched to deck" << target << std::endl;
+    std::cout << "[Active Deck] Switched to deck " << target << std::endl;
 
     return target;
 }
@@ -188,9 +188,9 @@ void MixingEngineService::sync_bpm(const PointerWrapper<AudioTrack> &track) cons
 {
     if (decks[active_deck] != nullptr && track)
     {
-        int bpm = decks[active_deck]->get_bpm();
+        int bpm = track->get_bpm();
         int avg_bpm = (track->get_bpm() + decks[active_deck]->get_bpm()) / 2;
         track->set_bpm(avg_bpm);
-        std::cout << "[Sync BPM]: Syncing BPM from  " << bpm << " to " << avg_bpm << "\n";
+        std::cout << "[Sync BPM]: Syncing BPM from " << bpm << " to " << avg_bpm << "\n";
     }
 }

@@ -24,6 +24,7 @@ bool LRUCache::put(PointerWrapper<AudioTrack> track)
 {
     if (track.get() == nullptr)
         return false;
+
     if (get(track.get()->get_title()) != nullptr)
     {
         return false;
@@ -36,8 +37,7 @@ bool LRUCache::put(PointerWrapper<AudioTrack> track)
     }
     size_t emptySlot = findEmptySlot();
     PointerWrapper<AudioTrack> clone = track->clone();
-    access_counter++;
-    slots[emptySlot].store(std::move(clone), access_counter);
+    slots[emptySlot].store(std::move(clone), ++access_counter);
     return evicted;
 }
 

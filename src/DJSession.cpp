@@ -83,7 +83,7 @@ int DJSession::load_track_to_controller(const std::string &track_name)
         stats.errors = stats.errors + 1;
         return 0;
     }
-    std::cout << "[System] Loading track " << track_name << " to controller" << std::endl;
+    std::cout << "[System] Loading track '" << track_name << "' to controller..." << std::endl;
     int val = controller_service.loadTrackToCache(*track);
     if (val == 1)
     {
@@ -198,7 +198,7 @@ void DJSession::simulate_dj_performance()
             {
                 for (std::string &title : track_titles)
                 {
-                    std::cout << "\n–-- Processing: " << title << "–--" << std::endl;
+                    std::cout << "\n–-- Processing: " << title << " –--" << std::endl;
                     stats.tracks_processed = stats.tracks_processed + 1;
                     load_track_to_controller(title);
                     controller_service.displayCacheStatus();
@@ -227,7 +227,7 @@ void DJSession::simulate_dj_performance()
             {
                 for (std::string title : track_titles)
                 {
-                    std::cout << "\n–-- Processing: " << title << "–--" << std::endl;
+                    std::cout << "\n–-- Processing: " << title << " –--" << std::endl;
                     stats.tracks_processed = stats.tracks_processed + 1;
                     load_track_to_controller(title);
                     mixing_service.displayDeckStatus(); // to print deck and cache after every track
@@ -241,7 +241,7 @@ void DJSession::simulate_dj_performance()
             input = display_playlist_menu_from_config();
         }
     }
-    std::cout << "Session cancelled by user or all playlits played" << std::endl;
+    std::cout << "Session cancelled by user or all playlists played." << std::endl;
 }
 
 /*
